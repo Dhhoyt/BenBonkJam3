@@ -15,6 +15,13 @@ func change_scene_with_transition(scene, transitionOut, transitionIn):
 	inTransition = transitionIn
 	$Transition/AnimationPlayer.play(transitionOut)
 	$Transition/AnimationPlayer.connect("animation_finished", self, "on_transition_end")
+func change_scene_with_signal(scene, obj, sig, vals = []):
+	newScenePath = load(scene)
+	outTransition = "Out"
+	inTransition = "In"
+	$Transition/AnimationPlayer.play(outTransition)
+	$Transition/AnimationPlayer.connect("animation_finished", self, "on_transition_end")
+	$Transition/AnimationPlayer.connect("animation_finished", obj, vals)
 func on_transition_end(anim):
 	$Transition/AnimationPlayer.disconnect("animation_finished", self, "on_transition_end")
 	var newScene = newScenePath.instance()
