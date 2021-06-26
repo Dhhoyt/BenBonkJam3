@@ -7,11 +7,12 @@ var mode = 0 # 0 is wander 1 is runing 2 is running, but outside of the werewolf
 var color = "Red"
 var path = PoolVector2Array()
 var moving = false
+var going_to_house = false
 onready var sprite = $AnimatedSprite
 onready var collision = $CollisionShape2D
 onready var deadtimer = $DeadTimer
 onready var runtimer = $RunTimer
-onready var houses = $"../../Houses"
+onready var houses = $"../../Village/Houses"
 onready var werewolf = $"../../Werewolf"
 onready var nav_2d = $"../../Village/Navigation2D"
 onready var tilemap = $"../../Village/Navigation2D/TileMap"
@@ -89,7 +90,9 @@ func get_new_goal():
 		var best_distance = 9223372036854775800
 		for i in houses.get_children():
 			if global_position.distance_to(i.global_position) < best_distance:
+				best_distance = global_position.distance_to(i.global_position)
 				new_goal = i.global_position
+		going_to_house = true
 	elif mode == 4:
 		pass
 	path = nav_2d.get_simple_path(global_position, new_goal)
@@ -106,15 +109,18 @@ func move_along_path(distance):
 		if distance <= distance_to_next and distance >= 0.0:
 			position = start_point.linear_interpolate(path[0], distance/distance_to_next)
 			break
-		elif distance < 0.5:
+		elif distance < 0.0:
 			position = path[0]
-			if mode == 3:
-				change_mode(4)
-			get_new_goal()
 			break
 		distance -= distance_to_next
 		start_point = path[0]
 		path.remove(0)
+	if path.size() == 0:
+		if going_to_house == true:
+			going_to_house = false
+			change_mode(5)
+			return
+		get_new_goal()
 
 func change_mode(new_mode : int):
 	if (not new_mode >= 0) or (not new_mode <= 6):
