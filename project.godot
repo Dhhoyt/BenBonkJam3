@@ -8,18 +8,28 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Scene",
+"language": "GDScript",
+"path": "res://Scripts/Scene.gd"
+} ]
+_global_script_class_icons={
+"Scene": ""
+}
+
 [application]
 
 config/name="BenBonkJam3"
-run/main_scene="res://Scenes/Day.tscn"
+run/main_scene="res://Scenes/Root.tscn"
 config/icon="res://Art/icon.png"
 
 [display]
 
 window/size/width=384
 window/size/height=256
-window/size/test_width=1920
-window/size/test_height=1280
+window/size/test_width=768
+window/size/test_height=512
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 
