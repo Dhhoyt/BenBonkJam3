@@ -11,8 +11,10 @@ onready var sprite = $AnimatedSprite
 onready var collision = $CollisionShape2D
 onready var deadtimer = $DeadTimer
 onready var runtimer = $RunTimer
+onready var houses = $"../../Houses"
 onready var werewolf = $"../../Werewolf"
 onready var nav_2d = $"../../Village/Navigation2D"
+onready var tilemap = $"../../Village/Navigation2D/TileMap"
 
 var valid_colors = ["Red", "Orange", "Yellow", "Lime", "Green", "Cyan", "Blue", "Purple"]
 export(Array, float) var speeds = [4, 3, 2, 1]
@@ -20,7 +22,7 @@ export(float) var werewolf_range = 40
 
 func _ready():
 	randomize()
-	change_state(0) # Replace with function body.
+	change_mode(0) # Replace with function body.
 	get_new_goal()
 
 func _process(delta):
@@ -42,23 +44,23 @@ func _process(delta):
 func wander():
 	#TODO: WANDER BEHAVIOR
 	if global_position.distance_to(werewolf.global_position) < werewolf_range:
-		change_state(1)
+		change_mode(1)
 		get_new_goal()
 
 func run():
 	if global_position.distance_to(werewolf.global_position) > werewolf_range:
-		change_state(2)
+		change_mode(2)
 		get_new_goal()
 
 func panic():
 	if global_position.distance_to(werewolf.global_position) < werewolf_range:
 		runtimer.stop()
-		change_state(1)
+		change_mode(1)
 		get_new_goal()
 
 func search():
 	if global_position.distance_to(werewolf.global_position) < werewolf_range:
-		change_state(1)
+		change_mode(1)
 		get_new_goal()
 
 func aggro():
@@ -67,18 +69,36 @@ func aggro():
 func get_new_goal():
 	var new_goal = global_position
 	if mode == 0:
-		new_goal.x = randf() * (map_size.x - padding * 2) + padding
-		new_goal.y = randf() * (map_size.y - padding * 2) + padding
-	elif mode == 1:
-		werewolf.global_position.linear_interpolate(global_position, 3)
-	elif mode == 2:
-		pass
+		var temp_goal = Vector2()
+		for i in range(5):
+			temp_goal.x = randf() * (map_size.x - padding * 2) + padding
+			temp_goal.y = randf() * (map_size.y - padding * 2) + padding
+			if is_land(temp_goal):
+				new_goal = temp_goal
+				break
+	elif mode == 1 or mode == 2:
+		var temp_goal = Vector2()
+		for i in range(1.5, 10, 0.5):
+			temp_goal = werewolf.global_position.linear_interpolate(global_position, 3)
+			if is_land(temp_goal):
+				new_goal = temp_goal
+				break
+		new_goal = werewolf.global_position.linear_interpolate(global_position, 3)
 	elif mode == 3:
-		pass
+		var closest_goal = Vector2()
+		var best_distance = 9223372036854775800
+		for i in houses.get_children():
+			if global_position.distance_to(i.global_position) < best_distance:
+				new_goal = i.global_position
 	elif mode == 4:
 		pass
 	path = nav_2d.get_simple_path(global_position, new_goal)
-	
+
+func is_land(pos):
+	var x = int(pos.x/16)
+	var y = int(pos.y/16)
+	return tilemap.get_cell(x, y) == 1
+
 func move_along_path(distance):
 	var start_point = position
 	for i in range(path.size()):
@@ -88,40 +108,43 @@ func move_along_path(distance):
 			break
 		elif distance < 0.5:
 			position = path[0]
+			if mode == 3:
+				change_mode(4)
 			get_new_goal()
+			break
 		distance -= distance_to_next
 		start_point = path[0]
 		path.remove(0)
 
-func change_state(new_state : int):
-	if (not new_state >= 0) or (not new_state <= 6):
+func change_mode(new_mode : int):
+	if (not new_mode >= 0) or (not new_mode <= 6):
 		return
-	mode = new_state
-	if new_state == 0:
+	mode = new_mode
+	if new_mode == 0:
 		moving = true
 		visible = true
 		sprite.animation = color + "_Wander"
-	elif new_state == 1:
+	elif new_mode == 1:
 		moving = true
 		visible = true
 		sprite.animation = color + "_Run"
-	elif new_state == 2:
+	elif new_mode == 2:
 		moving = true
 		visible = true
 		runtimer.start()
 		sprite.animation = color + "_Run"
-	elif new_state == 3:
+	elif new_mode == 3:
 		moving = true
 		visible = true
 		sprite.animation = color + "_Wander"
-	elif new_state == 4:
+	elif new_mode == 4:
 		moving = true
 		visible = true
 		sprite.animation = color + "_Fork"
-	elif new_state == 5:
+	elif new_mode == 5:
 		moving = false
 		visible = false
-	elif new_state == 6:
+	elif new_mode == 6:
 		moving = false
 		visible = true
 		sprite.animation = color + "_Dead"
@@ -131,10 +154,10 @@ func change_state(new_state : int):
 func set_color(new_color : String):
 	if valid_colors.find(new_color) != -1:
 		color = new_color
-		speed = speeds[int(floor(valid_colors.find(new_color)/2))]
+		speed = speeds[int(valid_colors.find(new_color)/2)]
 
 func _on_DeadTimer_timeout():
 	queue_free()
 
 func _on_RunTimer_timeout():
-	change_state(3)
+	change_mode(3)

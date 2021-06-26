@@ -9,3 +9,6 @@ hframes = 8
 vframes = 8
 frame = 7
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
