@@ -1,0 +1,121 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Art/lefttransition.png" type="Texture" id=1]
+[ext_resource path="res://Art/righttransition.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/SceneManager.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Title.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Animation" id=3]
+resource_name = "Gone"
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimationPlayer/LeftTransition:rect_position")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Vector2( 0, -256 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimationPlayer/RightTransition:rect_position")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Vector2( 192, 256 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "In"
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimationPlayer/LeftTransition:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -256 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimationPlayer/RightTransition:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 192, 256 ), Vector2( 192, 256 ), Vector2( 192, 0 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "Out"
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimationPlayer/LeftTransition:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 256 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimationPlayer/RightTransition:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 192, 0 ), Vector2( 192, 0 ), Vector2( 192, -256 ) ]
+}
+
+[node name="Root" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Scenes" type="Node2D" parent="."]
+
+[node name="Title" parent="Scenes" instance=ExtResource( 4 )]
+
+[node name="Transition" type="CanvasLayer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Transition"]
+anims/Gone = SubResource( 3 )
+anims/In = SubResource( 1 )
+anims/Out = SubResource( 2 )
+
+[node name="LeftTransition" type="TextureRect" parent="Transition/AnimationPlayer"]
+margin_top = -256.0
+margin_right = 192.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RightTransition" type="TextureRect" parent="Transition/AnimationPlayer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -192.0
+margin_top = 256.0
+margin_right = 9.15527e-05
+margin_bottom = 512.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon.png-df6bafeb8f0f5a872b74707f23c5f4ef.stex"
+path="res://.import/lefttransition.png-dffc5bb8dd164d82d23966936858b027.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/icon.png"
-dest_files=[ "res://.import/icon.png-df6bafeb8f0f5a872b74707f23c5f4ef.stex" ]
+source_file="res://Art/lefttransition.png"
+dest_files=[ "res://.import/lefttransition.png-dffc5bb8dd164d82d23966936858b027.stex" ]
 
 [params]
 
