@@ -1,7 +1,6 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Art/tilemap.png" type="Texture" id=1]
-[ext_resource path="res://Objects/House.tscn" type="PackedScene" id=2]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 16, 0, 16, 16, 0, 16, 0, 8, 8, 8, 8, 0, 8, 0 )
@@ -251,18 +250,3 @@ position = Vector2( 0, 138 )
 shape = SubResource( 23 )
 
 [node name="Houses" type="Node" parent="."]
-
-[node name="House" parent="Houses" instance=ExtResource( 2 )]
-position = Vector2( 24.7224, 25.1679 )
-
-[node name="House2" parent="Houses" instance=ExtResource( 2 )]
-position = Vector2( 123.673, 220.982 )
-
-[node name="House3" parent="Houses" instance=ExtResource( 2 )]
-position = Vector2( 165.039, 121.608 )
-
-[node name="House4" parent="Houses" instance=ExtResource( 2 )]
-position = Vector2( 48.0542, 143.162 )
-
-[node name="House5" parent="Houses" instance=ExtResource( 2 )]
-position = Vector2( 144.83, 37.3755 )

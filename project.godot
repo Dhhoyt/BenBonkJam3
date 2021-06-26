@@ -24,6 +24,10 @@ config/name="BenBonkJam3"
 run/main_scene="res://Scenes/Root.tscn"
 config/icon="res://Art/icon.png"
 
+[autoload]
+
+Globals="*res://Scripts/Globals.gd"
+
 [display]
 
 window/size/width=384
