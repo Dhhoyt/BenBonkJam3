@@ -17,3 +17,5 @@ func set_device(state):
 		Globals.set_mobile(false)
 	else:
 		Globals.set_mobile(true)
+func _ready():
+	$CanvasLayer/Label.text = "Score: "+str(Globals.level)+" Best: "+str(Globals.highscore)
