@@ -43,30 +43,34 @@ func wander():
 	#TODO: WANDER BEHAVIOR
 	if global_position.distance_to(werewolf.global_position) < werewolf_range:
 		change_state(1)
+		get_new_goal()
 
 func run():
 	if global_position.distance_to(werewolf.global_position) > werewolf_range:
 		change_state(2)
+		get_new_goal()
 
 func panic():
 	if global_position.distance_to(werewolf.global_position) < werewolf_range:
 		runtimer.stop()
 		change_state(1)
+		get_new_goal()
 
 func search():
 	if global_position.distance_to(werewolf.global_position) < werewolf_range:
 		change_state(1)
+		get_new_goal()
 
 func aggro():
 	pass
 
 func get_new_goal():
-	var new_goal = Vector2()
+	var new_goal = global_position
 	if mode == 0:
 		new_goal.x = randf() * (map_size.x - padding * 2) + padding
 		new_goal.y = randf() * (map_size.y - padding * 2) + padding
 	elif mode == 1:
-		pass
+		werewolf.global_position.linear_interpolate(global_position, 3)
 	elif mode == 2:
 		pass
 	elif mode == 3:
