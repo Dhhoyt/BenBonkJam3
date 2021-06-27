@@ -1,7 +1,7 @@
 extends Node
 var volume_percent = 1
 var music = true
-var mobile = false
+var mobile = true
 var level = 0
 var highscore = 0
 

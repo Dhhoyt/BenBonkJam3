@@ -1,13 +1,44 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://Scripts/Scene.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Title.gd" type="Script" id=1]
 [ext_resource path="res://Art/logo.png" type="Texture" id=2]
 [ext_resource path="res://Art/playbutton.png" type="Texture" id=3]
 [ext_resource path="res://Art/devicebutton.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/MultiStateButton.gd" type="Script" id=5]
+[ext_resource path="res://Art/volumebutton.png" type="Texture" id=6]
+[ext_resource path="res://Art/musicbutton.png" type="Texture" id=7]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 6 )
+region = Rect2( 33, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 6 )
+region = Rect2( 66, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 7 )
+region = Rect2( 33, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 4 )
+region = Rect2( 33, 0, 32, 32 )
 
 [node name="Title" type="Node2D"]
 script = ExtResource( 1 )
@@ -38,9 +69,12 @@ margin_top = 208.0
 margin_right = 48.0
 margin_bottom = 240.0
 texture_normal = SubResource( 1 )
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+states = [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ]
+state = 2
 
 [node name="MusicButton" type="TextureButton" parent="CanvasLayer"]
 margin_left = 64.0
@@ -48,9 +82,8 @@ margin_top = 208.0
 margin_right = 96.0
 margin_bottom = 240.0
 texture_normal = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource( 5 )
+states = [ SubResource( 5 ), SubResource( 6 ) ]
 
 [node name="DeviceButton" type="TextureButton" parent="CanvasLayer"]
 margin_left = 112.0
@@ -58,7 +91,9 @@ margin_top = 208.0
 margin_right = 144.0
 margin_bottom = 240.0
 texture_normal = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource( 5 )
+states = [ SubResource( 7 ), SubResource( 8 ) ]
 [connection signal="pressed" from="CanvasLayer/PlayButton" to="." method="change_scene" binds= [ "res://Scenes/Split.tscn" ]]
+[connection signal="on_state_changed" from="CanvasLayer/VolumeButton" to="." method="set_volume"]
+[connection signal="on_state_changed" from="CanvasLayer/MusicButton" to="." method="set_music"]
+[connection signal="on_state_changed" from="CanvasLayer/DeviceButton" to="." method="set_device"]
