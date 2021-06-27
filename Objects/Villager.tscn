@@ -409,7 +409,6 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 57 )
 animation = "Blue_Run"
-frame = 1
 playing = true
 
 [node name="DeadTimer" type="Timer" parent="."]
@@ -439,6 +438,7 @@ stream = ExtResource( 4 )
 stream = ExtResource( 3 )
 
 [node name="Fire" parent="." instance=ExtResource( 5 )]
+visible = false
 [connection signal="timeout" from="DeadTimer" to="." method="_on_DeadTimer_timeout"]
 [connection signal="timeout" from="RunTimer" to="." method="_on_RunTimer_timeout"]
 [connection signal="timeout" from="PathTimer" to="." method="_on_PathTimer_timeout"]

@@ -74,6 +74,7 @@ func generate():
 	$HBoxContainer/Day/Viewport/Day/Werewolf.night = false
 	$HBoxContainer/Night/Viewport/Night/Werewolf.position = Vector2(382/4, 256/2)
 func on_player_hit():
+	$HBoxContainer/Day/Viewport/Camera2D.shake(0.2, 15, 8)
 	Globals.playerHealth -= 1
 	if Globals.playerHealth <= 0:
 		change_scene("res://Scenes/Title.tscn")
@@ -81,7 +82,8 @@ func on_player_hit():
 	else:
 		update_health()
 func on_villager_death():
-	print(villagersLeft)
+	#print(villagersLeft)
+	$HBoxContainer/Night/Viewport/Camera2D.shake(0.2, 15, 8)
 	villagersLeft -= 1
 	if villagersLeft <= 0:
 		Globals.level += 1

@@ -4,4 +4,4 @@
 
 [node name="Fire" type="Light2D"]
 texture = ExtResource( 1 )
-color = Color( 1, 0.678431, 0, 1 )
+color = Color( 1, 0.933333, 0.627451, 1 )
