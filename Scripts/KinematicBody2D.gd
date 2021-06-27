@@ -9,6 +9,9 @@ var night = true
 
 onready var tileMap = $"../Village/Navigation2D/TileMap"
 
+func _ready():
+	$Timer.connect("timeout", $Timer, "start")
+	$Timer.connect("timeout", $Walk, "play")
 func get_input():
 	velocity = Vector2()
 	if Input.is_action_pressed("ui_right"):
@@ -33,3 +36,9 @@ func _process(delta):
 	$HumanRunning.playing = velocity.length_squared() > 1
 	if velocity.length_squared() > 1:
 		$WerewolfRunning.flip_h = velocity.x > 0 or velocity.y > 0
+		if !$Timer.is_connected("timeout", $Walk, "play"):
+			$Timer.connect("timeout", $Walk, "play")
+	else:
+		$WerewolfRunning.frame = 0
+		if $Timer.is_connected("timeout", $Walk, "play"):
+			$Timer.disconnect("timeout", $Walk, "play")

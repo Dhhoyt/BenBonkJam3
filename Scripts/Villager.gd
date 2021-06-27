@@ -124,7 +124,7 @@ func move_along_path(distance):
 	for i in range(path.size()):
 		var distance_to_next = start_point.distance_to(path[0])
 		if distance <= distance_to_next and distance >= 0.0:
-			position = start_point.linear_interpolate(path[0], distance/distance_to_next)
+			position = start_point.linear_interpolate(path[0], distance/max(distance_to_next, 0.001))
 			break
 		elif distance < 0.0:
 			position = path[0]
@@ -208,5 +208,7 @@ func on_villager_death():
 func _on_DeathZone_body_entered(body):
 	if body.is_in_group("Night_Player") and mode != 5 and mode != 6:
 		change_mode(6)
+		$Death.play()
 	if body.is_in_group("Day_Player") and mode == 4:
 		emit_signal("hit_player")
+		$Hit.play()
