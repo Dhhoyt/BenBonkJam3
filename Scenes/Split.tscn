@@ -55,7 +55,7 @@ script = ExtResource( 8 )
 [node name="Day" parent="HBoxContainer/Day/Viewport" instance=ExtResource( 2 )]
 
 [node name="FingerCircle" type="Sprite" parent="."]
-position = Vector2( 64, 192 )
+position = Vector2( 320, 192 )
 texture = ExtResource( 5 )
 script = ExtResource( 6 )
 
@@ -66,9 +66,21 @@ texture = ExtResource( 4 )
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 216.0
+margin_top = 8.0
 margin_right = 184.0
-margin_bottom = 248.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VillagerCount" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 8.0
+margin_right = 376.0
+margin_bottom = 40.0
+alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/basic ass video game song .wav-5d365e39ca66bad6dda4e8426fa271bf.sample"
+
+[deps]
+
+source_file="res://Art/basic ass video game song .wav"
+dest_files=[ "res://.import/basic ass video game song .wav-5d365e39ca66bad6dda4e8426fa271bf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0
