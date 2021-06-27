@@ -55,19 +55,19 @@ polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 vertices = PoolVector2Array( 0, 8, 0, 8, 8, 8, 8, 0, 16, 0, 16, 16, 0, 16 )
 polygons = [ PoolIntArray( 0, 1, 2, 3, 4, 5, 6 ) ]
 
-[sub_resource type="NavigationPolygon" id=31]
+[sub_resource type="NavigationPolygon" id=14]
 vertices = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 
-[sub_resource type="NavigationPolygon" id=32]
+[sub_resource type="NavigationPolygon" id=15]
 vertices = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 
-[sub_resource type="NavigationPolygon" id=33]
+[sub_resource type="NavigationPolygon" id=16]
 vertices = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 
-[sub_resource type="TileSet" id=34]
+[sub_resource type="TileSet" id=17]
 0/name = "tilemap.png 0"
 0/texture = ExtResource( 1 )
 0/tex_offset = Vector2( 0, 0 )
@@ -101,7 +101,7 @@ polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 1/autotile/tile_size = Vector2( 16, 16 )
 1/autotile/spacing = 0
 1/autotile/occluder_map = [  ]
-1/autotile/navpoly_map = [ Vector2( 0, 0 ), SubResource( 31 ), Vector2( 0, 1 ), SubResource( 32 ), Vector2( 0, 2 ), SubResource( 33 ) ]
+1/autotile/navpoly_map = [ Vector2( 0, 0 ), SubResource( 14 ), Vector2( 0, 1 ), SubResource( 15 ), Vector2( 0, 2 ), SubResource( 16 ) ]
 1/autotile/priority_map = [ Vector3( 0, 0, 5 ) ]
 1/autotile/z_index_map = [  ]
 1/occluder_offset = Vector2( 0, 0 )
@@ -113,13 +113,13 @@ polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 1/shapes = [  ]
 1/z_index = 0
 
-[sub_resource type="RectangleShape2D" id=35]
+[sub_resource type="RectangleShape2D" id=18]
 extents = Vector2( 15, 128 )
 
-[sub_resource type="RectangleShape2D" id=36]
+[sub_resource type="RectangleShape2D" id=19]
 extents = Vector2( 96, 10 )
 
-[sub_resource type="TileSet" id=37]
+[sub_resource type="TileSet" id=20]
 1/name = "wall.png 1"
 1/texture = ExtResource( 2 )
 1/tex_offset = Vector2( 0, 0 )
@@ -196,32 +196,31 @@ extents = Vector2( 96, 10 )
 [node name="Navigation2D" type="Navigation2D" parent="."]
 
 [node name="TileMap" type="TileMap" parent="Navigation2D"]
-tile_set = SubResource( 34 )
+tile_set = SubResource( 17 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 0, 1, 0, 1, 1, 131072, 2, 1, 0, 3, 1, 0, 4, 1, 131072, 5, 1, 131072, 6, 1, 65536, 7, 1, 0, 8, 1, 0, 9, 1, 0, 10, 1, 0, 11, 1, 65536, 65536, 1, 131072, 65537, 1, 0, 65538, 1, 65536, 65539, 0, 196609, 65540, 0, 3, 65541, 0, 0, 65542, 1, 0, 65543, 1, 0, 65544, 1, 65536, 65545, 1, 0, 65546, 1, 0, 65547, 1, 0, 131072, 1, 0, 131073, 1, 0, 131074, 1, 131072, 131075, 0, 1, 131076, 0, 65539, 131077, 0, 196611, 131078, 1, 65536, 131079, 1, 0, 131080, 1, 0, 131081, 1, 0, 131082, 1, 0, 131083, 1, 0, 196608, 1, 0, 196609, 1, 131072, 196610, 0, 196609, 196611, 0, 65537, 196612, 0, 131075, 196613, 1, 0, 196614, 1, 0, 196615, 1, 0, 196616, 1, 131072, 196617, 1, 0, 196618, 1, 0, 196619, 1, 0, 262144, 1, 65536, 262145, 1, 0, 262146, 0, 131072, 262147, 0, 131073, 262148, 0, 196611, 262149, 1, 65536, 262150, 1, 131072, 262151, 1, 131072, 262152, 1, 131072, 262153, 1, 0, 262154, 1, 0, 262155, 1, 65536, 327680, 1, 131072, 327681, 1, 0, 327682, 1, 0, 327683, 1, 0, 327684, 1, 0, 327685, 1, 0, 327686, 0, 196609, 327687, 0, 0, 327688, 1, 0, 327689, 1, 0, 327690, 1, 0, 327691, 1, 0, 393216, 1, 0, 393217, 1, 0, 393218, 1, 131072, 393219, 1, 0, 393220, 1, 65536, 393221, 0, 196609, 393222, 0, 65537, 393223, 0, 2, 393224, 0, 0, 393225, 1, 131072, 393226, 1, 0, 393227, 1, 131072, 458752, 1, 0, 458753, 1, 0, 458754, 1, 0, 458755, 1, 65536, 458756, 1, 0, 458757, 0, 131072, 458758, 0, 131074, 458759, 0, 65538, 458760, 0, 131075, 458761, 1, 131072, 458762, 1, 131072, 458763, 1, 0, 524288, 1, 0, 524289, 1, 0, 524290, 1, 131072, 524291, 1, 0, 524292, 1, 0, 524293, 1, 0, 524294, 0, 131072, 524295, 0, 131073, 524296, 0, 196611, 524297, 1, 0, 524298, 1, 131072, 524299, 1, 0, 589824, 1, 0, 589825, 1, 131072, 589826, 1, 0, 589827, 1, 65536, 589828, 1, 0, 589829, 1, 0, 589830, 1, 0, 589831, 1, 131072, 589832, 1, 0, 589833, 1, 131072, 589834, 1, 0, 589835, 1, 131072, 655360, 1, 0, 655361, 1, 0, 655362, 1, 131072, 655363, 1, 0, 655364, 1, 0, 655365, 1, 0, 655366, 1, 0, 655367, 1, 0, 655368, 1, 0, 655369, 1, 0, 655370, 1, 65536, 655371, 1, 131072, 720896, 1, 0, 720897, 0, 196609, 720898, 0, 3, 720899, 0, 3, 720900, 0, 0, 720901, 1, 0, 720902, 1, 0, 720903, 1, 65536, 720904, 1, 65536, 720905, 1, 65536, 720906, 1, 131072, 720907, 1, 65536, 786432, 1, 0, 786433, 0, 1, 786434, 0, 65538, 786435, 0, 65538, 786436, 0, 2, 786437, 0, 0, 786438, 1, 0, 786439, 1, 0, 786440, 1, 0, 786441, 1, 0, 786442, 1, 65536, 786443, 1, 65536, 851968, 1, 0, 851969, 0, 131072, 851970, 0, 131074, 851971, 0, 65539, 851972, 0, 131073, 851973, 0, 196611, 851974, 1, 0, 851975, 1, 0, 851976, 1, 0, 851977, 1, 0, 851978, 1, 0, 851979, 1, 0, 917504, 1, 0, 917505, 1, 65536, 917506, 0, 131072, 917507, 0, 196611, 917508, 1, 65536, 917509, 1, 131072, 917510, 1, 0, 917511, 1, 0, 917512, 1, 0, 917513, 1, 0, 917514, 1, 0, 917515, 1, 131072, 983040, 1, 131072, 983041, 1, 0, 983042, 1, 0, 983043, 1, 0, 983044, 1, 0, 983045, 1, 0, 983046, 1, 0, 983047, 1, 0, 983048, 1, 0, 983049, 1, 131072, 983050, 1, 0, 983051, 1, 0 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
 position = Vector2( 96, 128 )
 
 [node name="Left" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -106, 0 )
-shape = SubResource( 35 )
+shape = SubResource( 18 )
 
 [node name="Right" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 106, 0 )
-shape = SubResource( 35 )
+shape = SubResource( 18 )
 
 [node name="Top" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 0, -122 )
-shape = SubResource( 36 )
+shape = SubResource( 19 )
 
 [node name="Bottom" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 0, 132 )
-shape = SubResource( 36 )
+shape = SubResource( 19 )
 
 [node name="Walls2" type="TileMap" parent="."]
-tile_set = SubResource( 37 )
+tile_set = SubResource( 20 )
 cell_size = Vector2( 16, 16 )
 cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
 format = 1

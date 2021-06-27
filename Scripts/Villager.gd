@@ -12,7 +12,7 @@ onready var sprite = $AnimatedSprite
 onready var collision = $CollisionShape2D
 onready var deadtimer = $DeadTimer
 onready var runtimer = $RunTimer
-onready var houses = $"../../Village/Houses"
+onready var houses = $"../../Houses"
 onready var werewolf = $"../../Werewolf"
 onready var nav_2d = $"../../Village/Navigation2D"
 onready var villagers = $"../../Villagers/"
@@ -67,6 +67,7 @@ func search():
 		get_new_goal()
 
 func hiding(delta):
+	hide()
 	var out = 1
 	for i in villagers.get_children():
 		if i.mode != 4 and i.mode != 6:
@@ -133,6 +134,7 @@ func move_along_path(distance):
 		get_new_goal()
 
 func change_mode(new_mode : int):
+	show()
 	if (not new_mode >= 0) or (not new_mode <= 6):
 		return
 	mode = new_mode

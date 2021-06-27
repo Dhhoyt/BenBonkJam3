@@ -61,5 +61,4 @@ texture_normal = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="pressed" from="CanvasLayer/PlayButton" to="." method="change_scene" binds= [ "res://Scenes/Split.tscn" ]]
