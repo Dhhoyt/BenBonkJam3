@@ -4,7 +4,7 @@
 [ext_resource path="res://Objects/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Art/NightTileset.tres" type="TileSet" id=3]
 
-[node name="Night" type="Node2D"]
+[node name="Night" type="YSort"]
 
 [node name="Village" parent="." instance=ExtResource( 1 )]
 
@@ -14,8 +14,8 @@ tile_set = ExtResource( 3 )
 [node name="Werewolf" parent="." instance=ExtResource( 2 )]
 position = Vector2( 50, 150 )
 
-[node name="Villagers" type="Node" parent="."]
+[node name="Villagers" type="YSort" parent="."]
 
-[node name="Houses" type="Node" parent="."]
+[node name="Houses" type="YSort" parent="."]
 
 [editable path="Village"]

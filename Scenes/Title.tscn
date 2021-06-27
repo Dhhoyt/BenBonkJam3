@@ -92,6 +92,9 @@ margin_right = 144.0
 margin_bottom = 240.0
 texture_normal = SubResource( 1 )
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 states = [ SubResource( 7 ), SubResource( 8 ) ]
 [connection signal="pressed" from="CanvasLayer/PlayButton" to="." method="change_scene" binds= [ "res://Scenes/Split.tscn" ]]
 [connection signal="on_state_changed" from="CanvasLayer/VolumeButton" to="." method="set_volume"]

@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal death()
+
 var speed = 10
 var map_size = Vector2(192,256)
 var padding = 10
@@ -167,6 +169,7 @@ func change_mode(new_mode : int):
 		visible = true
 		sprite.animation = color + "_Dead"
 		deadtimer.start()
+		emit_signal("death")
 		set_process(false)
 
 func set_color(new_color : String):
@@ -182,3 +185,7 @@ func _on_RunTimer_timeout():
 
 func _on_PathTimer_timeout():
 	get_new_goal()
+
+func _on_DeathZone_body_entered(body):
+	if body.is_in_group("Player"):
+		change_mode(6)

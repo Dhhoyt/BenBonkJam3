@@ -15,7 +15,7 @@ func _ready():
 	#	villager.connect("death", self, "on_villager_death")
 func generate():
 	var possibleHousePositions = [Vector2(32, 32), Vector2(32+128, 32), Vector2(32, 32+64), Vector2(32+128, 32+64), Vector2(32, 32+64*2), Vector2(32+128, 32+64*2), Vector2(32, 32+64*3), Vector2(32+128, 32+64*3)]
-	for i in range(min(Globals.level+randi()%2, 8)):
+	for i in range(min(Globals.level+randi()%2+1, 8)):
 		var pos = possibleHousePositions[randi()%len(possibleHousePositions)]
 		possibleHousePositions.erase(pos)
 		
@@ -34,14 +34,14 @@ func generate():
 		newVillager.set_color(newVillager.valid_colors[i])
 		newVillager.position = pos
 		newVillager.mode = 5
-		#newVillager.connect("death", self, "on_villager_death")
+		newVillager.connect("death", self, "on_villager_death")
 		
 		newVillager = VILLAGER.instance()
 		$HBoxContainer/Night/Viewport/Night/Villagers.add_child(newVillager)
 		newVillager.set_color(newVillager.valid_colors[i])
 		newVillager.position = pos
 		newVillager.mode = 5
-		#newVillager.connect("death", self, "on_villager_death")
+		newVillager.connect("death", self, "on_villager_death")
 	
 	var daymap = $HBoxContainer/Day/Viewport/Day/Village/Navigation2D/TileMap
 	var nightmap = $HBoxContainer/Night/Viewport/Night/Village/Navigation2D/TileMap
