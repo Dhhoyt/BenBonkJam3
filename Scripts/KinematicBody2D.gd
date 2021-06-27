@@ -21,6 +21,6 @@ func get_input():
 	velocity = velocity.normalized() * (waterSpeed if inWater else speed)
 
 func _physics_process(delta):
-	inWater = tileMap.get_cellv(tileMap.world_to_map(position)) == 0
+	inWater = tileMap.get_cellv(tileMap.world_to_map(position)) == 0 or tileMap.get_cellv(tileMap.world_to_map(position)) == 2
 	get_input()
 	velocity = move_and_slide(velocity)

@@ -56,10 +56,10 @@ func generate():
 			var grassnum = 0 if rand < 5 else 1 if rand < 6 else 2
 			if noise.get_noise_2d(round(x/2)*2, round(y/2)*2) < (float(Globals.level)/5)-1:
 				daymap.set_cell(x, y, 0)
-				nightmap.set_cell(x, y, 0)
+				nightmap.set_cell(x, y, 2)
 			else:
 				daymap.set_cell(x, y, 1, false, false, false, Vector2(0, grassnum))
-				nightmap.set_cell(x, y, 1, false, false, false, Vector2(0, grassnum))
+				nightmap.set_cell(x, y, 3, false, false, false, Vector2(0, grassnum))
 	daymap.update_bitmask_region(Vector2(0, 0), Vector2(13, 15))
 	nightmap.update_bitmask_region(Vector2(0, 0), Vector2(13, 15))
 	
