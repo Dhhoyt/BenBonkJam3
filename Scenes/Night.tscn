@@ -11,7 +11,9 @@
 [node name="TileMap" parent="Village/Navigation2D" index="0"]
 tile_set = ExtResource( 3 )
 
-[node name="Werewolf" parent="." instance=ExtResource( 2 )]
+[node name="Werewolf" parent="." groups=[
+"Night_Player",
+] instance=ExtResource( 2 )]
 position = Vector2( 50, 150 )
 
 [node name="Villagers" type="YSort" parent="."]

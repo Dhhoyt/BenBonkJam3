@@ -9,13 +9,15 @@ const VILLAGER = preload("res://Objects/Villager.tscn")
 func _ready():
 	randomize()
 	generate()
-	for player in get_tree().get_nodes_in_group("Player"):
-		player.connect("hit", self, "on_player_hit")
+	#for player in get_tree().get_nodes_in_group("Player"):
+		#player.connect("hit", self, "on_player_hit")
 	#for villager in get_tree().get_nodes_in_group("Villagers"):
 	#	villager.connect("death", self, "on_villager_death")
 func generate():
 	var possibleHousePositions = [Vector2(32, 32), Vector2(32+128, 32), Vector2(32, 32+64), Vector2(32+128, 32+64), Vector2(32, 32+64*2), Vector2(32+128, 32+64*2), Vector2(32, 32+64*3), Vector2(32+128, 32+64*3)]
+	villagersLeft = 0
 	for i in range(min(Globals.level+randi()%2+1, 8)):
+		villagersLeft += 1
 		var pos = possibleHousePositions[randi()%len(possibleHousePositions)]
 		possibleHousePositions.erase(pos)
 		
@@ -29,19 +31,23 @@ func generate():
 		newHouse.position = pos
 		newHouse.update_color(newHouse.valid_colors[i])
 		
-		var newVillager = VILLAGER.instance()
-		$HBoxContainer/Day/Viewport/Day/Villagers.add_child(newVillager)
-		newVillager.set_color(newVillager.valid_colors[i])
-		newVillager.position = pos
-		newVillager.mode = 5
-		newVillager.connect("death", self, "on_villager_death")
+		var newVillager_day = VILLAGER.instance()
+		$HBoxContainer/Day/Viewport/Day/Villagers.add_child(newVillager_day)
+		newVillager_day.set_color(newVillager_day.valid_colors[i])
+		newVillager_day.position = pos
+		newVillager_day.mode = 5
+		newVillager_day.is_day = true
+		newVillager_day.connect("hit_player", self, "on_player_hit")
 		
-		newVillager = VILLAGER.instance()
-		$HBoxContainer/Night/Viewport/Night/Villagers.add_child(newVillager)
-		newVillager.set_color(newVillager.valid_colors[i])
-		newVillager.position = pos
-		newVillager.mode = 5
-		newVillager.connect("death", self, "on_villager_death")
+		var newVillager_night = VILLAGER.instance()
+		$HBoxContainer/Night/Viewport/Night/Villagers.add_child(newVillager_night)
+		newVillager_night.set_color(newVillager_night.valid_colors[i])
+		newVillager_night.position = pos
+		newVillager_night.mode = 5
+		newVillager_night.connect("death", self, "on_villager_death")
+		newVillager_night.connect("death", newVillager_day, "on_villager_death")
+		newVillager_night.connect("scared", newVillager_day, "on_scared")
+		newVillager_night.connect("calm", newVillager_day, "on_calm")
 	
 	var daymap = $HBoxContainer/Day/Viewport/Day/Village/Navigation2D/TileMap
 	var nightmap = $HBoxContainer/Night/Viewport/Night/Village/Navigation2D/TileMap
@@ -71,6 +77,7 @@ func on_player_hit():
 	if playerHealth <= 0:
 		change_scene("res://Scenes/Title.tscn")
 func on_villager_death():
+	print(villagersLeft)
 	villagersLeft -= 1
 	if villagersLeft <= 0:
 		Globals.level += 1

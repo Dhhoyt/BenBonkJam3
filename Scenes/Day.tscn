@@ -7,7 +7,9 @@
 
 [node name="Village" parent="." instance=ExtResource( 1 )]
 
-[node name="Werewolf" parent="." instance=ExtResource( 2 )]
+[node name="Werewolf" parent="." groups=[
+"Day_Player",
+] instance=ExtResource( 2 )]
 position = Vector2( 50, 150 )
 
 [node name="Villagers" type="YSort" parent="."]

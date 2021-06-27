@@ -1,15 +1,19 @@
 extends KinematicBody2D
 
 signal death()
+signal scared()
+signal calm()
+signal hit_player()
 
 var speed = 10
 var map_size = Vector2(192,256)
-var padding = 10
+var padding = 15
 var mode = 0 # 0 is wander 1 is runing 2 is running, but outside of the werewolf's range 3 is searching for a house 4 is fighting 5 is hidden 6 is dead
 var color = "Red"
 var path = PoolVector2Array()
 var moving = false
 var going_to_house = false
+var is_day = false
 onready var sprite = $AnimatedSprite
 onready var collision = $CollisionShape2D
 onready var deadtimer = $DeadTimer
@@ -47,8 +51,7 @@ func _process(delta):
 		hiding(delta)
 
 func wander():
-	#TODO: WANDER BEHAVIOR
-	if global_position.distance_to(werewolf.global_position) < werewolf_range:
+	if global_position.distance_to(werewolf.global_position) < werewolf_range and not is_day:
 		change_mode(1)
 		get_new_goal()
 
@@ -58,13 +61,13 @@ func run():
 		get_new_goal()
 
 func panic():
-	if global_position.distance_to(werewolf.global_position) < werewolf_range:
+	if global_position.distance_to(werewolf.global_position) < werewolf_range and not is_day:
 		runtimer.stop()
 		change_mode(1)
 		get_new_goal()
 
 func search():
-	if global_position.distance_to(werewolf.global_position) < werewolf_range:
+	if global_position.distance_to(werewolf.global_position) < werewolf_range and not is_day:
 		change_mode(1)
 		get_new_goal()
 
@@ -86,8 +89,8 @@ func get_new_goal():
 	if mode == 0:
 		var temp_goal = Vector2()
 		for i in range(5):
-			temp_goal.x = randf() * (map_size.x - padding * 2) + padding
-			temp_goal.y = randf() * (map_size.y - padding * 2) + padding
+			temp_goal.x = randf() * (map_size.x - (padding * 2)) + padding
+			temp_goal.y = randf() * (map_size.y - (padding * 2)) + padding
 			if is_land(temp_goal):
 				new_goal = temp_goal
 				break
@@ -98,7 +101,8 @@ func get_new_goal():
 			if is_land(temp_goal):
 				new_goal = temp_goal
 				break
-		new_goal = werewolf.global_position.linear_interpolate(global_position, 3)
+		new_goal.x = clamp(werewolf.global_position.linear_interpolate(global_position, 3).x, padding, map_size.x - padding)
+		new_goal.y = clamp(werewolf.global_position.linear_interpolate(global_position, 3).y, padding, map_size.y - padding)
 	elif mode == 3:
 		var best_distance = 9223372036854775800
 		for i in houses.get_children():
@@ -113,7 +117,7 @@ func get_new_goal():
 func is_land(pos):
 	var x = int(pos.x/16)
 	var y = int(pos.y/16)
-	return tilemap.get_cell(x, y) == 1
+	return tilemap.get_cell(x, y) == 1 or tilemap.get_cell(x, y) == 3
 
 func move_along_path(distance):
 	var start_point = position
@@ -171,11 +175,22 @@ func change_mode(new_mode : int):
 		deadtimer.start()
 		emit_signal("death")
 		set_process(false)
+	if not is_day:
+		if new_mode in [1, 2, 3]:
+			emit_signal("scared")
+		if new_mode in [0, 4, 5]:
+			emit_signal("calm")
 
 func set_color(new_color : String):
 	if valid_colors.find(new_color) != -1:
 		color = new_color
 		speed = speeds[int(valid_colors.find(new_color)/2)]
+
+func on_calm():
+	change_mode(0)
+	
+func on_scared():
+	change_mode(4)
 
 func _on_DeadTimer_timeout():
 	queue_free()
@@ -186,6 +201,11 @@ func _on_RunTimer_timeout():
 func _on_PathTimer_timeout():
 	get_new_goal()
 
+func on_villager_death():
+	change_mode(6)
+
 func _on_DeathZone_body_entered(body):
-	if body.is_in_group("Player"):
+	if body.is_in_group("Night_Player") and mode != 5 and mode != 6:
 		change_mode(6)
+	if body.is_in_group("Day_Player") and mode == 4:
+		emit_signal("hit_player")
