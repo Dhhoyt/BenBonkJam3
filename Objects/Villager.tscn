@@ -413,8 +413,11 @@ wait_time = 10.0
 one_shot = true
 
 [node name="RunTimer" type="Timer" parent="."]
-wait_time = 2.0
 one_shot = true
+
+[node name="PathTimer" type="Timer" parent="."]
+autostart = true
 
 [connection signal="timeout" from="DeadTimer" to="." method="_on_DeadTimer_timeout"]
 [connection signal="timeout" from="RunTimer" to="." method="_on_RunTimer_timeout"]
+[connection signal="timeout" from="PathTimer" to="." method="_on_PathTimer_timeout"]

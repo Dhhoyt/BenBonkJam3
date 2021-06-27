@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var speed = 20
+var speed = 10
 var map_size = Vector2(192,256)
 var padding = 10
 var mode = 0 # 0 is wander 1 is runing 2 is running, but outside of the werewolf's range 3 is searching for a house 4 is fighting 5 is hidden 6 is dead
@@ -15,15 +15,17 @@ onready var runtimer = $RunTimer
 onready var houses = $"../../Village/Houses"
 onready var werewolf = $"../../Werewolf"
 onready var nav_2d = $"../../Village/Navigation2D"
+onready var villagers = $"../../Villagers/"
 onready var tilemap = $"../../Village/Navigation2D/TileMap"
 
 var valid_colors = ["Red", "Orange", "Yellow", "Lime", "Green", "Cyan", "Blue", "Purple"]
-export(Array, float) var speeds = [4, 3, 2, 1]
+export(Array, float) var speeds = [40, 30, 20, 10]
 export(float) var werewolf_range = 40
 
 func _ready():
 	randomize()
-	change_mode(0) # Replace with function body.
+	set_color(color)
+	change_mode(4) # Replace with function body.
 	get_new_goal()
 
 func _process(delta):
@@ -40,7 +42,7 @@ func _process(delta):
 	elif mode == 4:
 		aggro()
 	elif mode == 5:
-		hide()
+		hiding(delta)
 
 func wander():
 	#TODO: WANDER BEHAVIOR
@@ -64,6 +66,15 @@ func search():
 		change_mode(1)
 		get_new_goal()
 
+func hiding(delta):
+	var out = 1
+	for i in villagers.get_children():
+		if i.mode != 4 and i.mode != 6:
+			out += 1
+	if randf() < (pow(0.5, out) * delta):
+		change_mode(0)
+		get_new_goal()
+
 func aggro():
 	pass
 
@@ -79,14 +90,13 @@ func get_new_goal():
 				break
 	elif mode == 1 or mode == 2:
 		var temp_goal = Vector2()
-		for i in range(1.5, 10, 0.5):
+		for i in range(1.1, 10, 0.1):
 			temp_goal = werewolf.global_position.linear_interpolate(global_position, 3)
 			if is_land(temp_goal):
 				new_goal = temp_goal
 				break
 		new_goal = werewolf.global_position.linear_interpolate(global_position, 3)
 	elif mode == 3:
-		var closest_goal = Vector2()
 		var best_distance = 9223372036854775800
 		for i in houses.get_children():
 			if global_position.distance_to(i.global_position) < best_distance:
@@ -94,7 +104,7 @@ func get_new_goal():
 				new_goal = i.global_position
 		going_to_house = true
 	elif mode == 4:
-		pass
+		new_goal = werewolf.global_position
 	path = nav_2d.get_simple_path(global_position, new_goal)
 
 func is_land(pos):
@@ -142,7 +152,7 @@ func change_mode(new_mode : int):
 	elif new_mode == 3:
 		moving = true
 		visible = true
-		sprite.animation = color + "_Wander"
+		sprite.animation = color + "_Run"
 	elif new_mode == 4:
 		moving = true
 		visible = true
@@ -167,3 +177,6 @@ func _on_DeadTimer_timeout():
 
 func _on_RunTimer_timeout():
 	change_mode(3)
+
+func _on_PathTimer_timeout():
+	get_new_goal()

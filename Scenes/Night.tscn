@@ -8,7 +8,7 @@
 [node name="Village" parent="." instance=ExtResource( 1 )]
 
 [node name="Werewolf" parent="." instance=ExtResource( 2 )]
-position = Vector2( 96, 128 )
+position = Vector2( 50, 150 )
 
 [node name="Villagers" type="Node" parent="."]
 
