@@ -9,18 +9,12 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "TextureButton",
-"class": "MultiStateButton",
-"language": "GDScript",
-"path": "res://Scripts/MultiStateButton.gd"
-}, {
 "base": "Node2D",
 "class": "Scene",
 "language": "GDScript",
 "path": "res://Scripts/Scene.gd"
 } ]
 _global_script_class_icons={
-"MultiStateButton": "",
 "Scene": ""
 }
 

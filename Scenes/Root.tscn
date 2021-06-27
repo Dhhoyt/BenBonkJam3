@@ -5,7 +5,7 @@
 [ext_resource path="res://Scripts/SceneManager.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Title.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 resource_name = "Gone"
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimationPlayer/LeftTransition:rect_position")
@@ -32,8 +32,7 @@ tracks/1/keys = {
 "values": [ Vector2( 192, 256 ) ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "In"
+[sub_resource type="Animation" id=2]
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimationPlayer/LeftTransition:rect_position")
 tracks/0/interp = 1
@@ -59,8 +58,7 @@ tracks/1/keys = {
 "values": [ Vector2( 192, 256 ), Vector2( 192, 256 ), Vector2( 192, 0 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "Out"
+[sub_resource type="Animation" id=3]
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimationPlayer/LeftTransition:rect_position")
 tracks/0/interp = 1
@@ -96,9 +94,9 @@ script = ExtResource( 3 )
 [node name="Transition" type="CanvasLayer" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Transition"]
-anims/Gone = SubResource( 3 )
-anims/In = SubResource( 1 )
-anims/Out = SubResource( 2 )
+anims/Gone = SubResource( 1 )
+anims/In = SubResource( 2 )
+anims/Out = SubResource( 3 )
 
 [node name="LeftTransition" type="TextureRect" parent="Transition/AnimationPlayer"]
 margin_top = -256.0
@@ -119,8 +117,3 @@ texture = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Music" type="AudioStreamPlayer" parent="." groups=[
-"Music",
-"Sound",
-]]
