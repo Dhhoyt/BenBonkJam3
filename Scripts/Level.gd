@@ -64,6 +64,7 @@ func generate():
 	nightmap.update_bitmask_region(Vector2(0, 0), Vector2(13, 15))
 	
 	$HBoxContainer/Day/Viewport/Day/Werewolf.position = Vector2(382/4, 256/2)
+	$HBoxContainer/Day/Viewport/Day/Werewolf.night = false
 	$HBoxContainer/Night/Viewport/Night/Werewolf.position = Vector2(382/4, 256/2)
 func on_player_hit():
 	playerHealth -= 1

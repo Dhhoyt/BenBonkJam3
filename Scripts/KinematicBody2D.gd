@@ -5,6 +5,7 @@ export (int) var waterSpeed = 75
 
 var velocity = Vector2()
 var inWater = false
+var night = true
 
 onready var tileMap = $"../Village/Navigation2D/TileMap"
 
@@ -24,3 +25,11 @@ func _physics_process(delta):
 	inWater = tileMap.get_cellv(tileMap.world_to_map(position)) == 0 or tileMap.get_cellv(tileMap.world_to_map(position)) == 2
 	get_input()
 	velocity = move_and_slide(velocity)
+
+func _process(delta):
+	$WerewolfRunning.visible = night
+	$HumanRunning.visible = !night
+	$WerewolfRunning.playing = velocity.length_squared() > 1
+	$HumanRunning.playing = velocity.length_squared() > 1
+	if velocity.length_squared() > 1:
+		$WerewolfRunning.flip_h = velocity.x > 0 or velocity.y > 0
