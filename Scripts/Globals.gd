@@ -26,6 +26,10 @@ func set_music(m):
 	music = m
 func set_mobile(m):
 	mobile = m
+func reset():
+	level = 0
+	score = 0
+	playerHealth = 3
 
 func save_player_data(new_score):
 	# Open the config file

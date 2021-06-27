@@ -78,7 +78,7 @@ func on_player_hit():
 	Globals.playerHealth -= 1
 	if Globals.playerHealth <= 0:
 		change_scene("res://Scenes/Title.tscn")
-		Globals.playerHealth = 3
+		Globals.save_player_data(Globals.score)
 	else:
 		update_health()
 func on_villager_death():
@@ -87,6 +87,7 @@ func on_villager_death():
 	villagersLeft -= 1
 	if villagersLeft <= 0:
 		Globals.level += 1
+		Globals.score += 1
 		$LevelComplete.play()
 		change_scene("res://Scenes/Split.tscn")
 func update_health():

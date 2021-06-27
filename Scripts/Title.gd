@@ -1,5 +1,6 @@
 extends Scene
 func _ready():
+	Globals.load_player_data()
 	$CanvasLayer/Panel/Label.text = "Score:"+str(Globals.score)+" High:"+str(Globals.highscore)
 	$CanvasLayer/Panel/VolumeButton.state = 0 if Globals.volume_percent == 0 else (1 if Globals.volume_percent == 0.75 else 2)
 	$CanvasLayer/Panel/MusicButton.state = 0 if Globals.music else 1
@@ -21,3 +22,5 @@ func set_device(state):
 		Globals.set_mobile(false)
 	else:
 		Globals.set_mobile(true)
+func reset_globals():
+	Globals.reset()
