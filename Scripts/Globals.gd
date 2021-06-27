@@ -17,13 +17,13 @@ func _process(delta):
 	var audioPlayers = get_tree().get_nodes_in_group("Sound")
 	for audioPlayer in audioPlayers:
 		audioPlayer.volume_db = volume_percent*80-80
-	var musicPlayers = get_tree().get_nodes_in_group("Music")
-	for musicPlayer in musicPlayers:
-		musicPlayer.playing = music
 func set_volume(v):
 	volume_percent = v
 func set_music(m):
 	music = m
+	var musicPlayers = get_tree().get_nodes_in_group("Music")
+	for musicPlayer in musicPlayers:
+		musicPlayer.playing = music
 func set_mobile(m):
 	mobile = m
 func reset():

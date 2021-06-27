@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Art/lefttransition.png" type="Texture" id=1]
 [ext_resource path="res://Art/righttransition.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/SceneManager.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Title.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Art/basic ass video game song .wav" type="AudioStream" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Gone"
@@ -117,3 +118,10 @@ texture = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." groups=[
+"Music",
+"Sound",
+]]
+stream = ExtResource( 5 )
+autoplay = true

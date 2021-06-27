@@ -5,17 +5,19 @@ var villagersLeft = 0
 const HOUSE = preload("res://Objects/House.tscn")
 const VILLAGER = preload("res://Objects/Villager.tscn")
 const LIFE = preload("res://Art/life.png")
+const PERSON = preload("res://Art/person.png")
 
 func _ready():
 	randomize()
 	generate()
 	update_health()
+	update_villagers()
 	#for player in get_tree().get_nodes_in_group("Player"):
 		#player.connect("hit", self, "on_player_hit")
 	#for villager in get_tree().get_nodes_in_group("Villagers"):
 	#	villager.connect("death", self, "on_villager_death")
 func generate():
-	var possibleHousePositions = [Vector2(32, 32), Vector2(32+128, 32), Vector2(32, 32+64), Vector2(32+128, 32+64), Vector2(32, 32+64*2), Vector2(32+128, 32+64*2), Vector2(32+64, 32+64*2), Vector2(32+128, 32+64*3)]
+	var possibleHousePositions = [Vector2(32, 48), Vector2(32+128, 48), Vector2(32, 48+64), Vector2(32+128, 48+64), Vector2(32, 48+64*2), Vector2(32+128, 48+64*2), Vector2(32, 32+64*3), Vector2(32+128, 32+64*3)]
 	villagersLeft = 0
 	for i in range(min(int(Globals.level/2)+randi()%2+2, 8)):
 		villagersLeft += 1
@@ -61,7 +63,7 @@ func generate():
 		for y in range(0, 17):
 			var rand = randi()%7
 			var grassnum = 0 if rand < 5 else 1 if rand < 6 else 2
-			if noise.get_noise_2d(round(x/2)*2, round(y/2)*2) < (float(Globals.level)/5)-1:
+			if noise.get_noise_2d(round(x/2)*2, round(y/2)*2) > (float(10-Globals.level)/5)-1:
 				daymap.set_cell(x, y, 0)
 				nightmap.set_cell(x, y, 2)
 			else:
@@ -85,6 +87,7 @@ func on_villager_death():
 	#print(villagersLeft)
 	$HBoxContainer/Night/Viewport/Camera2D.shake(0.2, 15, 8)
 	villagersLeft -= 1
+	update_villagers()
 	if villagersLeft <= 0:
 		Globals.level += 1
 		Globals.score += 1
@@ -100,3 +103,13 @@ func update_health():
 		while $LifeCount.get_child_count() > Globals.playerHealth:
 			$LifeCount.get_children()[0].queue_free()
 			$LifeCount.remove_child($LifeCount.get_children()[0])
+func update_villagers():
+	if $VillagerCount.get_child_count() < villagersLeft:
+		for i in range(villagersLeft):
+			var newPerson = TextureRect.new()
+			newPerson.texture = PERSON
+			$VillagerCount.add_child(newPerson)
+	else:
+		while $VillagerCount.get_child_count() > villagersLeft:
+			$VillagerCount.get_children()[0].queue_free()
+			$VillagerCount.remove_child($VillagerCount.get_children()[0])
