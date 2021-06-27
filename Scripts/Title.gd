@@ -1,7 +1,6 @@
 extends Scene
 func _ready():
-	#update score text
-	pass
+	$CanvasLayer/Panel/Label.text = "Score:"+str(Globals.score)+" High:"+str(Globals.highscore)
 func set_volume(state):
 	if state == 0:
 		Globals.set_volume(0)

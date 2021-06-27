@@ -3,6 +3,7 @@ var volume_percent = 1
 var music = true
 var mobile = true
 var level = 0
+var score = 0
 var highscore = 0
 
 var config_file

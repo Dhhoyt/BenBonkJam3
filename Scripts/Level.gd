@@ -5,16 +5,18 @@ var villagersLeft = 0
 
 const HOUSE = preload("res://Objects/House.tscn")
 const VILLAGER = preload("res://Objects/Villager.tscn")
+const LIFE = preload("res://Art/life.png")
 
 func _ready():
 	randomize()
 	generate()
+	update_health()
 	#for player in get_tree().get_nodes_in_group("Player"):
 		#player.connect("hit", self, "on_player_hit")
 	#for villager in get_tree().get_nodes_in_group("Villagers"):
 	#	villager.connect("death", self, "on_villager_death")
 func generate():
-	var possibleHousePositions = [Vector2(32, 32), Vector2(32+128, 32), Vector2(32, 32+64), Vector2(32+128, 32+64), Vector2(32, 32+64*2), Vector2(32+128, 32+64*2), Vector2(32, 32+64*3), Vector2(32+128, 32+64*3)]
+	var possibleHousePositions = [Vector2(32, 32), Vector2(32+128, 32), Vector2(32, 32+64), Vector2(32+128, 32+64), Vector2(32, 32+64*2), Vector2(32+128, 32+64*2), Vector2(64, 32+64*2), Vector2(32+128, 32+64*3)]
 	villagersLeft = 0
 	for i in range(min(Globals.level+randi()%2+1, 8)):
 		villagersLeft += 1
@@ -76,9 +78,21 @@ func on_player_hit():
 	playerHealth -= 1
 	if playerHealth <= 0:
 		change_scene("res://Scenes/Title.tscn")
+	else:
+		update_health()
 func on_villager_death():
 	print(villagersLeft)
 	villagersLeft -= 1
 	if villagersLeft <= 0:
 		Globals.level += 1
 		change_scene("res://Scenes/Split.tscn")
+func update_health():
+	if $LifeCount.get_child_count() < playerHealth:
+		for i in range(playerHealth):
+			var newHeart = TextureRect.new()
+			newHeart.texture = LIFE
+			$LifeCount.add_child(newHeart)
+	else:
+		while $LifeCount.get_child_count() > playerHealth:
+			$LifeCount.get_children()[0].queue_free()
+			$LifeCount.remove_child($LifeCount.get_children()[0])

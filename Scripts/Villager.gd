@@ -77,7 +77,7 @@ func hiding(delta):
 	for i in villagers.get_children():
 		if i.mode != 4 and i.mode != 6:
 			out += 1
-	if randf() < (pow(0.5, out) * delta):
+	if randf() < (pow(0.75, out) * delta):# or out == 1:
 		change_mode(0)
 		get_new_goal()
 

@@ -54,3 +54,14 @@ script = ExtResource( 6 )
 
 [node name="FingerPoint" type="Sprite" parent="FingerCircle"]
 texture = ExtResource( 4 )
+
+[node name="LifeCount" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 216.0
+margin_right = 184.0
+margin_bottom = 248.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
