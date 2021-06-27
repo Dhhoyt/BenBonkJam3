@@ -179,7 +179,8 @@ func change_mode(new_mode : int):
 		if new_mode in [1, 2, 3]:
 			emit_signal("scared")
 		if new_mode in [0, 4, 5]:
-			emit_signal("calm")
+			#emit_signal("calm")
+			pass
 
 func set_color(new_color : String):
 	if valid_colors.find(new_color) != -1:
