@@ -3,7 +3,7 @@ extends TextureButton
 
 signal on_state_changed(state)
 
-export var states = []
+export(Array, Texture) var states = []
 export var state = 0
 
 func _ready():

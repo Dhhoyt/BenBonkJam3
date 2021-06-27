@@ -2,7 +2,7 @@ extends Node
 var volume_percent = 1
 var music = true
 var mobile = false
-var level = 0
+var level = 5
 var highscore = 0
 
 var config_file
