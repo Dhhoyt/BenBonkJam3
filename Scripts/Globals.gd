@@ -1,10 +1,11 @@
 extends Node
 var volume_percent = 1
 var music = true
-var mobile = true
+var mobile = false
 var level = 0
 var score = 0
 var highscore = 0
+var playerHealth = 3
 
 var config_file
 const CONFIG_FILEPATH = "user://highscores.cfg"
@@ -12,16 +13,17 @@ const CONFIG_FILEPATH = "user://highscores.cfg"
 func _ready():
 	config_file = ConfigFile.new()
 	load_player_data()
-func set_volume(v):
-	volume_percent = v
+func _process(delta):
 	var audioPlayers = get_tree().get_nodes_in_group("Sound")
 	for audioPlayer in audioPlayers:
-		audioPlayer.volume_db = volume_percent*10 if volume_percent > 0 else 80
-func set_music(m):
-	music = m
+		audioPlayer.volume_db = volume_percent*80-80
 	var musicPlayers = get_tree().get_nodes_in_group("Music")
 	for musicPlayer in musicPlayers:
-		musicPlayer.playing = m
+		musicPlayer.playing = music
+func set_volume(v):
+	volume_percent = v
+func set_music(m):
+	music = m
 func set_mobile(m):
 	mobile = m
 

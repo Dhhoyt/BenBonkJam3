@@ -1,6 +1,5 @@
 extends Scene
 
-var playerHealth = 3
 var villagersLeft = 0
 
 const HOUSE = preload("res://Objects/House.tscn")
@@ -16,9 +15,9 @@ func _ready():
 	#for villager in get_tree().get_nodes_in_group("Villagers"):
 	#	villager.connect("death", self, "on_villager_death")
 func generate():
-	var possibleHousePositions = [Vector2(32, 32), Vector2(32+128, 32), Vector2(32, 32+64), Vector2(32+128, 32+64), Vector2(32, 32+64*2), Vector2(32+128, 32+64*2), Vector2(64, 32+64*2), Vector2(32+128, 32+64*3)]
+	var possibleHousePositions = [Vector2(32, 32), Vector2(32+128, 32), Vector2(32, 32+64), Vector2(32+128, 32+64), Vector2(32, 32+64*2), Vector2(32+128, 32+64*2), Vector2(32+64, 32+64*2), Vector2(32+128, 32+64*3)]
 	villagersLeft = 0
-	for i in range(min(Globals.level+randi()%2+1, 8)):
+	for i in range(min(int(Globals.level/2)+randi()%2+2, 8)):
 		villagersLeft += 1
 		var pos = possibleHousePositions[randi()%len(possibleHousePositions)]
 		possibleHousePositions.erase(pos)
@@ -75,9 +74,10 @@ func generate():
 	$HBoxContainer/Day/Viewport/Day/Werewolf.night = false
 	$HBoxContainer/Night/Viewport/Night/Werewolf.position = Vector2(382/4, 256/2)
 func on_player_hit():
-	playerHealth -= 1
-	if playerHealth <= 0:
+	Globals.playerHealth -= 1
+	if Globals.playerHealth <= 0:
 		change_scene("res://Scenes/Title.tscn")
+		Globals.playerHealth = 3
 	else:
 		update_health()
 func on_villager_death():
@@ -85,14 +85,15 @@ func on_villager_death():
 	villagersLeft -= 1
 	if villagersLeft <= 0:
 		Globals.level += 1
+		$LevelComplete.play()
 		change_scene("res://Scenes/Split.tscn")
 func update_health():
-	if $LifeCount.get_child_count() < playerHealth:
-		for i in range(playerHealth):
+	if $LifeCount.get_child_count() < Globals.playerHealth:
+		for i in range(Globals.playerHealth):
 			var newHeart = TextureRect.new()
 			newHeart.texture = LIFE
 			$LifeCount.add_child(newHeart)
 	else:
-		while $LifeCount.get_child_count() > playerHealth:
+		while $LifeCount.get_child_count() > Globals.playerHealth:
 			$LifeCount.get_children()[0].queue_free()
 			$LifeCount.remove_child($LifeCount.get_children()[0])
