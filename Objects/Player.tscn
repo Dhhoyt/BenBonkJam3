@@ -144,6 +144,20 @@ shape = SubResource( 9 )
 ]]
 stream = ExtResource( 4 )
 
+[node name="WaterTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="SpeedTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.375
-autostart = true
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="WaterTimer" to="." method="_on_WaterTimer_timeout" binds= [ 0 ]]
+[connection signal="timeout" from="SpeedTimer" to="." method="_on_SpeedTimer_timeout"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_CooldownTimer_timeout"]

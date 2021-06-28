@@ -49,6 +49,8 @@ func _process(delta):
 		aggro()
 	elif mode == 5:
 		hiding(delta)
+	elif mode == 7:
+		torch(delta * speed)
 
 func wander():
 	if global_position.distance_to(werewolf.global_position) < werewolf_range and not is_day:
@@ -78,11 +80,20 @@ func hiding(delta):
 		if i.mode != 4 and i.mode != 6:
 			out += 1
 	if randf() < (pow(0.75, out) * delta):# or out == 1:
+		if !is_day and randf() > 0.9:
+			change_mode(7)
+			return
 		change_mode(0)
 		get_new_goal()
 
 func aggro():
 	pass
+	
+func torch(distance):
+	var distance_to_next = global_position.distance_to(werewolf.global_position)
+	global_position = global_position.linear_interpolate(werewolf.global_position, distance/distance_to_next)
+	if tilemap.get_cellv(tilemap.world_to_map(position)) == 0 or tilemap.get_cellv(tilemap.world_to_map(position)) == 2:
+		change_mode(0)
 
 func get_new_goal():
 	var new_goal = global_position
@@ -105,11 +116,16 @@ func get_new_goal():
 		new_goal.y = clamp(werewolf.global_position.linear_interpolate(global_position, 3).y, padding, map_size.y - padding)
 	elif mode == 3:
 		var best_distance = 9223372036854775800
+		var found_house = false
 		for i in houses.get_children():
-			if global_position.distance_to(i.global_position) < best_distance:
+			if global_position.distance_to(i.global_position) < best_distance and !i.burning:
 				best_distance = global_position.distance_to(i.global_position)
 				new_goal = i.global_position
-		going_to_house = true
+				found_house = true
+		if found_house:
+			going_to_house = true
+		else:
+			change_mode(2)
 	elif mode == 4:
 		new_goal = werewolf.global_position
 	path = nav_2d.get_simple_path(global_position, new_goal)
@@ -141,7 +157,8 @@ func move_along_path(distance):
 
 func change_mode(new_mode : int):
 	show()
-	if (not new_mode >= 0) or (not new_mode <= 6):
+	$Fire.visible = false
+	if (not new_mode >= 0) or (not new_mode <= 7):
 		return
 	mode = new_mode
 	if new_mode == 0:
@@ -175,11 +192,17 @@ func change_mode(new_mode : int):
 		deadtimer.start()
 		emit_signal("death")
 		set_process(false)
+	elif new_mode == 7:
+		moving = false
+		visible = true
+		sprite.animation = color + "_Torch"
+		$Fire.visible = true
 	if not is_day:
-		if new_mode in [1, 2, 3]:
+		if new_mode in [1]:
 			emit_signal("scared")
 		if new_mode in [0, 4, 5]:
-			emit_signal("calm")
+			#emit_signal("calm")
+			pass
 
 func set_color(new_color : String):
 	if valid_colors.find(new_color) != -1:
@@ -206,8 +229,10 @@ func on_villager_death():
 
 func _on_DeathZone_body_entered(body):
 	if body.is_in_group("Night_Player") and mode != 5 and mode != 6:
-		change_mode(6)
-		$Death.play()
+		if !body.on_cooldown:
+			body.kill()
+			change_mode(6)
+			$Death.play()
 	if body.is_in_group("Day_Player") and mode == 4:
 		emit_signal("hit_player")
 		$Hit.play()

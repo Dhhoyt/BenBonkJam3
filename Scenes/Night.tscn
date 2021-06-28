@@ -27,5 +27,4 @@ position = Vector2( 50, 150 )
 color = Color( 0.27451, 0.27451, 0.27451, 1 )
 
 [editable path="Village"]
-
 [editable path="Werewolf"]

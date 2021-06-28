@@ -1,9 +1,16 @@
 extends Scene
 
 var villagersLeft = 0
+var pickups_active = 0
+
+var max_pickups = 3
+var padding = 30
+
+var map_size = Vector2(192,256)
 
 const HOUSE = preload("res://Objects/House.tscn")
 const VILLAGER = preload("res://Objects/Villager.tscn")
+const PICKUP = preload("res://Objects/Pickup.tscn")
 const LIFE = preload("res://Art/life.png")
 const PERSON = preload("res://Art/person.png")
 
@@ -16,6 +23,11 @@ func _ready():
 		#player.connect("hit", self, "on_player_hit")
 	#for villager in get_tree().get_nodes_in_group("Villagers"):
 	#	villager.connect("death", self, "on_villager_death")
+
+func _process(delta):
+	if randf() < 1/1.99 * delta and pickups_active < max_pickups:
+		create_pickup()
+
 func generate():
 	var possibleHousePositions = [Vector2(32, 48), Vector2(32+128, 48), Vector2(32, 48+64), Vector2(32+128, 48+64), Vector2(32, 48+64*2), Vector2(32+128, 48+64*2), Vector2(32, 32+64*3), Vector2(32+128, 32+64*3)]
 	villagersLeft = 0
@@ -83,6 +95,19 @@ func on_player_hit():
 		Globals.save_player_data(Globals.score)
 	else:
 		update_health()
+
+func create_pickup():
+	var pickup = PICKUP.instance()
+	pickup.set_type(randi() % 4)
+	pickup.connect("pickup", self, "on_pickup")
+	if bool(randi() % 2):
+		$HBoxContainer/Night/Viewport/Night/.add_child(pickup)
+	else:
+		$HBoxContainer/Day/Viewport/Day/.add_child(pickup)
+	pickup.position.x = randf() * (map_size.x - (padding * 2)) + padding
+	pickup.position.y = randf() * (map_size.y - (padding * 2)) + padding
+	pickups_active += 1
+
 func on_villager_death():
 	#print(villagersLeft)
 	$HBoxContainer/Night/Viewport/Camera2D.shake(0.2, 15, 8)
@@ -95,7 +120,7 @@ func on_villager_death():
 		change_scene("res://Scenes/Split.tscn")
 func update_health():
 	if $LifeCount.get_child_count() < Globals.playerHealth:
-		for i in range(Globals.playerHealth):
+		for i in range(Globals.playerHealth - $LifeCount.get_child_count()):
 			var newHeart = TextureRect.new()
 			newHeart.texture = LIFE
 			$LifeCount.add_child(newHeart)
@@ -113,3 +138,20 @@ func update_villagers():
 		while $VillagerCount.get_child_count() > villagersLeft:
 			$VillagerCount.get_children()[0].queue_free()
 			$VillagerCount.remove_child($VillagerCount.get_children()[0])
+			
+func on_pickup(type):
+	pickups_active -= 1
+	if type == 0:
+		Globals.playerHealth += 1
+		print(Globals.playerHealth)
+		update_health()
+	elif type == 1:
+		$HBoxContainer/Day/Viewport/Day/Werewolf.fast()
+		$HBoxContainer/Night/Viewport/Night/Werewolf.fast()
+	elif type == 2:
+		$HBoxContainer/Day/Viewport/Day/Werewolf.ignore_water()
+		$HBoxContainer/Night/Viewport/Night/Werewolf.ignore_water()
+	elif type == 3:
+		for i in $HBoxContainer/Day/Viewport/Day/Villagers.get_children():
+			if i.mode == 4:
+				i.change_mode(0)
