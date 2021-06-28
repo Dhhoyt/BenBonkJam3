@@ -189,7 +189,7 @@ func change_mode(new_mode : int):
 		visible = true
 		sprite.animation = color + "_Dead"
 	if not is_day:
-		if new_mode in [1, 2, 3]:
+		if new_mode in [1]:
 			emit_signal("scared")
 		if new_mode in [0, 4, 5]:
 			#emit_signal("calm")

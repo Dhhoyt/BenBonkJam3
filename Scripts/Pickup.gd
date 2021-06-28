@@ -6,7 +6,7 @@ var type = 0 setget set_type
 
 func set_type(_type):
 	if _type <= 3 and _type >= 0: 
-		frame = type
+		frame = _type
 		type = _type
 
 func _on_Area2D_body_entered(body):

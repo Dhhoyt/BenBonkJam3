@@ -25,7 +25,7 @@ func _ready():
 	#	villager.connect("death", self, "on_villager_death")
 
 func _process(delta):
-	if randf() < 1/1 * delta and pickups_active < max_pickups:
+	if randf() < 1/1.99 * delta and pickups_active < max_pickups:
 		create_pickup()
 
 func generate():
@@ -98,12 +98,12 @@ func on_player_hit():
 
 func create_pickup():
 	var pickup = PICKUP.instance()
+	pickup.set_type(randi() % 4)
+	pickup.connect("pickup", self, "on_pickup")
 	if bool(randi() % 2):
 		$HBoxContainer/Night/Viewport/Night/.add_child(pickup)
 	else:
 		$HBoxContainer/Day/Viewport/Day/.add_child(pickup)
-	pickup.set_type(3)
-	pickup.connect("pickup", self, "on_pickup")
 	pickup.position.x = randf() * (map_size.x - (padding * 2)) + padding
 	pickup.position.y = randf() * (map_size.y - (padding * 2)) + padding
 	pickups_active += 1
@@ -154,4 +154,4 @@ func on_pickup(type):
 	elif type == 3:
 		for i in $HBoxContainer/Day/Viewport/Day/Villagers.get_children():
 			if i.mode == 4:
-				i.mode = 0
+				i.change_mode(0)
