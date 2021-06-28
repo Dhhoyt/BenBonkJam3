@@ -12,6 +12,8 @@ onready var tileMap = $"../Village/Navigation2D/TileMap"
 func _ready():
 	$Timer.connect("timeout", $Timer, "start")
 	$Timer.connect("timeout", $Walk, "play")
+	$WerewolfRunning.animation = str(Globals.wolf_skin)
+	$HumanRunning.animation = str(Globals.human_skin)
 func get_input():
 	velocity = Vector2()
 	if Input.is_action_pressed("ui_right"):

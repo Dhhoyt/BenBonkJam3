@@ -5,6 +5,8 @@ func _ready():
 	$CanvasLayer/Panel/VolumeButton.state = 0 if Globals.volume_percent == 0 else (1 if Globals.volume_percent == 0.75 else 2)
 	$CanvasLayer/Panel/MusicButton.state = 0 if Globals.music else 1
 	$CanvasLayer/Panel/DeviceButton.state = 1 if Globals.mobile else 0
+	$CanvasLayer/Panel/WolfSelect.state = Globals.wolf_skin
+	$CanvasLayer/Panel/HumanSelect.state = Globals.human_skin
 func set_volume(state):
 	if state == 0:
 		Globals.set_volume(0)
@@ -24,3 +26,7 @@ func set_device(state):
 		Globals.set_mobile(true)
 func reset_globals():
 	Globals.reset()
+func set_wolf_skin(state):
+	Globals.wolf_skin = state
+func set_human_skin(state):
+	Globals.human_skin = state

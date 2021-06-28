@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/Title.gd" type="Script" id=1]
 [ext_resource path="res://Art/logo.png" type="Texture" id=2]
@@ -11,6 +11,10 @@
 [ext_resource path="res://Art/NightTileset.tres" type="TileSet" id=9]
 [ext_resource path="res://Art/DayTileset.tres" type="TileSet" id=10]
 [ext_resource path="res://Art/joystix monospace.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://Art/Arrow.png" type="Texture" id=12]
+[ext_resource path="res://Art/player.png" type="Texture" id=13]
+[ext_resource path="res://Art/human.png" type="Texture" id=14]
+[ext_resource path="res://Scripts/Select.gd" type="Script" id=15]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0.164706, 0.407843 )
@@ -50,6 +54,14 @@ region = Rect2( 33, 0, 32, 32 )
 [sub_resource type="DynamicFont" id=10]
 size = 10
 font_data = ExtResource( 11 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 14 )
+region = Rect2( 0, 0, 32, 32 )
 
 [node name="Title" type="Node2D"]
 script = ExtResource( 1 )
@@ -129,6 +141,80 @@ text = "Score: 0 High: 0"
 align = 1
 valign = 1
 
+[node name="WolfSelect" type="TextureRect" parent="CanvasLayer/Panel"]
+margin_left = 64.0
+margin_top = 120.0
+margin_right = 96.0
+margin_bottom = 152.0
+rect_scale = Vector2( 2, 2 )
+texture = SubResource( 11 )
+script = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Up" type="TextureButton" parent="CanvasLayer/Panel/WolfSelect"]
+margin_left = 8.0
+margin_top = -8.0
+margin_right = 24.0
+margin_bottom = 8.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 8, 8 )
+texture_normal = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Down" type="TextureButton" parent="CanvasLayer/Panel/WolfSelect"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 24.0
+margin_bottom = 40.0
+rect_rotation = -180.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 8, 8 )
+texture_normal = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HumanSelect" type="TextureRect" parent="CanvasLayer/Panel"]
+margin_left = 256.0
+margin_top = 120.0
+margin_right = 288.0
+margin_bottom = 152.0
+rect_scale = Vector2( 2, 2 )
+texture = SubResource( 12 )
+script = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Up" type="TextureButton" parent="CanvasLayer/Panel/HumanSelect"]
+margin_left = 8.0
+margin_top = -8.0
+margin_right = 24.0
+margin_bottom = 8.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 8, 8 )
+texture_normal = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Down" type="TextureButton" parent="CanvasLayer/Panel/HumanSelect"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 24.0
+margin_bottom = 40.0
+rect_rotation = -180.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 8, 8 )
+texture_normal = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 9 )
 cell_size = Vector2( 16, 16 )
@@ -151,3 +237,5 @@ tile_data = PoolIntArray( 0, 1, 0, 1, 2, 0, 2, 2, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 
 [connection signal="on_state_changed" from="CanvasLayer/Panel/VolumeButton" to="." method="set_volume"]
 [connection signal="on_state_changed" from="CanvasLayer/Panel/MusicButton" to="." method="set_music"]
 [connection signal="on_state_changed" from="CanvasLayer/Panel/DeviceButton" to="." method="set_device"]
+[connection signal="state_changed" from="CanvasLayer/Panel/WolfSelect" to="." method="set_wolf_skin"]
+[connection signal="state_changed" from="CanvasLayer/Panel/HumanSelect" to="." method="set_human_skin"]

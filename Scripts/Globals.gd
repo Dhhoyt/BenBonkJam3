@@ -6,6 +6,8 @@ var level = 0
 var score = 0
 var highscore = 0
 var playerHealth = 3
+var wolf_skin = 0
+var human_skin = 0
 
 var config_file
 const CONFIG_FILEPATH = "user://highscores.cfg"
