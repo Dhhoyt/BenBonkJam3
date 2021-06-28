@@ -4,3 +4,4 @@
 
 [node name="Light2D" type="Light2D"]
 texture = ExtResource( 1 )
+energy = 1.2

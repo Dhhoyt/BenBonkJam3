@@ -16,6 +16,7 @@ func update_color(new_color):
 func _on_Area2D_body_entered(body):
 	if body.is_in_group("Villager"):
 		if body.mode == 7:
+			body.change_mode(0)
 			burning = true
 			animation = color + "_Fire"
 			$Light2D.visible = true

@@ -6,6 +6,7 @@ signal calm()
 signal hit_player()
 
 var speed = 10
+var torch_chance = 0.1
 var map_size = Vector2(192,256)
 var padding = 15
 var mode = 0 # 0 is wander 1 is runing 2 is running, but outside of the werewolf's range 3 is searching for a house 4 is fighting 5 is hidden 6 is dead
@@ -79,21 +80,24 @@ func hiding(delta):
 	for i in villagers.get_children():
 		if i.mode != 4 and i.mode != 6:
 			out += 1
-	if randf() < (pow(0.75, out) * delta):# or out == 1:
-		if !is_day and randf() > 0.9:
+	if randf() < (pow(0.75, out) * delta):
+		if randf() < torch_chance:# and !is_day:
 			change_mode(7)
 			return
 		change_mode(0)
 		get_new_goal()
 
 func aggro():
-	pass
+	if !$Angry.playing:
+		$Angry.play()
 	
 func torch(distance):
 	var distance_to_next = global_position.distance_to(werewolf.global_position)
 	global_position = global_position.linear_interpolate(werewolf.global_position, distance/distance_to_next)
-	if tilemap.get_cellv(tilemap.world_to_map(position)) == 0 or tilemap.get_cellv(tilemap.world_to_map(position)) == 2:
-		change_mode(0)
+	if !$Angry.playing:
+		$Angry.play()
+	#if tilemap.get_cellv(tilemap.world_to_map(position)) == 0 or tilemap.get_cellv(tilemap.world_to_map(position)) == 2:
+	#	change_mode(0)
 
 func get_new_goal():
 	var new_goal = global_position
@@ -140,7 +144,8 @@ func move_along_path(distance):
 	for i in range(path.size()):
 		var distance_to_next = start_point.distance_to(path[0])
 		if distance <= distance_to_next and distance >= 0.0:
-			position = start_point.linear_interpolate(path[0], distance/max(distance_to_next, 0.001))
+			#position = start_point.linear_interpolate(path[0], distance/max(distance_to_next, 0.001))
+			move_and_collide((path[0]-start_point).normalized()*distance)
 			break
 		elif distance < 0.0:
 			position = path[0]
@@ -229,10 +234,16 @@ func on_villager_death():
 
 func _on_DeathZone_body_entered(body):
 	if body.is_in_group("Night_Player") and mode != 5 and mode != 6:
-		if !body.on_cooldown:
-			body.kill()
-			change_mode(6)
-			$Death.play()
+		if mode == 7:
+			change_mode(1)
+			emit_signal("hit_player")
+			$Hit.play()
+		else:
+			if !body.on_cooldown:
+				body.kill()
+				change_mode(6)
+				$Death.play()
 	if body.is_in_group("Day_Player") and mode == 4:
+		change_mode(0)
 		emit_signal("hit_player")
 		$Hit.play()

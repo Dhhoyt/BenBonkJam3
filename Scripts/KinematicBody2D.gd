@@ -9,8 +9,10 @@ var inWater = false
 var night = true
 var ignore_water = false
 var on_cooldown = false
+var temp_modulate = Color(1, 1, 1)
 
 onready var tileMap = $"../Village/Navigation2D/TileMap"
+onready var modulate_timer = $Timer
 
 func _ready():
 	$Timer.connect("timeout", $Timer, "start")
@@ -39,8 +41,8 @@ func _process(delta):
 	$HumanRunning.visible = !night
 	$WerewolfRunning.playing = velocity.length_squared() > 1
 	$HumanRunning.playing = velocity.length_squared() > 1
-	var color_percent = ($CooldownTimer.wait_time - $CooldownTimer.time_left)/$CooldownTimer.wait_time
-	$WerewolfRunning.modulate = Color(1, color_percent, color_percent, 1)
+	var s = 1-modulate_timer.time_left/modulate_timer.wait_time
+	modulate = Color(min(temp_modulate.r+s, 1), min(temp_modulate.g+s, 1), min(temp_modulate.b+s, 1))
 	if velocity.length_squared() > 1:
 		$WerewolfRunning.flip_h = velocity.x > 0 or velocity.y > 0
 		if !$Timer.is_connected("timeout", $Walk, "play"):
@@ -53,10 +55,13 @@ func _process(delta):
 func ignore_water():
 	ignore_water = true
 	$WaterTimer.start()
-	
+	temp_modulate = Color(0, 0, 1)
+	modulate_timer = $WaterTimer
 func fast():
 	speed_mult = 1.5
 	$SpeedTimer.start()
+	temp_modulate = Color(0, 1, 0)
+	modulate_timer = $SpeedTimer
 
 func _on_WaterTimer_timeout():
 	ignore_water = false
@@ -67,6 +72,8 @@ func _on_SpeedTimer_timeout():
 func kill():
 	on_cooldown = true
 	$CooldownTimer.start()
+	temp_modulate = Color(1, 0, 0)
+	modulate_timer = $CooldownTimer
 
 func _on_CooldownTimer_timeout():
 	on_cooldown = false
