@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Scripts/Title.gd" type="Script" id=1]
 [ext_resource path="res://Art/logo.png" type="Texture" id=2]
@@ -10,11 +10,14 @@
 [ext_resource path="res://Art/WallTileset.tres" type="TileSet" id=8]
 [ext_resource path="res://Art/NightTileset.tres" type="TileSet" id=9]
 [ext_resource path="res://Art/DayTileset.tres" type="TileSet" id=10]
-[ext_resource path="res://Art/joystix monospace.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://Art/Font.tres" type="DynamicFont" id=11]
 [ext_resource path="res://Art/Arrow.png" type="Texture" id=12]
 [ext_resource path="res://Art/player.png" type="Texture" id=13]
 [ext_resource path="res://Art/human.png" type="Texture" id=14]
 [ext_resource path="res://Scripts/Select.gd" type="Script" id=15]
+[ext_resource path="res://Art/sharebutton.png" type="Texture" id=16]
+[ext_resource path="res://Art/questionbutton.png" type="Texture" id=17]
+[ext_resource path="res://Art/x.png" type="Texture" id=18]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0.164706, 0.407843 )
@@ -51,10 +54,6 @@ region = Rect2( 0, 0, 32, 32 )
 atlas = ExtResource( 4 )
 region = Rect2( 33, 0, 32, 32 )
 
-[sub_resource type="DynamicFont" id=10]
-size = 10
-font_data = ExtResource( 11 )
-
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 13 )
 region = Rect2( 0, 0, 32, 32 )
@@ -62,6 +61,9 @@ region = Rect2( 0, 0, 32, 32 )
 [sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 14 )
 region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0.160784, 0.211765, 0.435294, 1 )
 
 [node name="Title" type="Node2D"]
 script = ExtResource( 1 )
@@ -127,6 +129,27 @@ __meta__ = {
 }
 states = [ SubResource( 8 ), SubResource( 9 ) ]
 
+[node name="ShareButton" type="TextureButton" parent="CanvasLayer/Panel"]
+visible = false
+margin_left = 160.0
+margin_top = 208.0
+margin_right = 192.0
+margin_bottom = 240.0
+texture_normal = ExtResource( 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HelpButton" type="TextureButton" parent="CanvasLayer/Panel"]
+margin_left = 160.0
+margin_top = 208.0
+margin_right = 192.0
+margin_bottom = 240.0
+texture_normal = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Label" type="Label" parent="CanvasLayer/Panel"]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -136,10 +159,13 @@ margin_left = -64.0
 margin_top = -32.0
 margin_right = 64.0
 margin_bottom = -18.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "Score: 0 High: 0"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="WolfSelect" type="TextureRect" parent="CanvasLayer/Panel"]
 margin_left = 64.0
@@ -215,6 +241,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HelpPanel" type="WindowDialog" parent="CanvasLayer"]
+margin_left = 16.0
+margin_top = 96.0
+margin_right = 368.0
+margin_bottom = 240.0
+custom_icons/close_highlight = ExtResource( 18 )
+custom_icons/close = ExtResource( 18 )
+custom_styles/panel = SubResource( 14 )
+custom_fonts/title_font = ExtResource( 11 )
+custom_colors/title_color = Color( 1, 1, 1, 1 )
+window_title = "How To Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/HelpPanel"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 344.0
+margin_bottom = 144.0
+custom_fonts/font = ExtResource( 11 )
+text = "You are a werewolf and your goal is to eat everyone in the village.
+As a werewolf, move onto a person to eat them. But beware: your human half is vulnerable and you must avoid angry villagers! 
+
+Made by Dynamism and Sirstotes for the 2021 BenBonk Game Jam"
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 9 )
 cell_size = Vector2( 16, 16 )
@@ -237,5 +294,7 @@ tile_data = PoolIntArray( 0, 1, 0, 1, 2, 0, 2, 2, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 
 [connection signal="on_state_changed" from="CanvasLayer/Panel/VolumeButton" to="." method="set_volume"]
 [connection signal="on_state_changed" from="CanvasLayer/Panel/MusicButton" to="." method="set_music"]
 [connection signal="on_state_changed" from="CanvasLayer/Panel/DeviceButton" to="." method="set_device"]
+[connection signal="pressed" from="CanvasLayer/Panel/ShareButton" to="." method="share"]
+[connection signal="pressed" from="CanvasLayer/Panel/HelpButton" to="." method="help"]
 [connection signal="state_changed" from="CanvasLayer/Panel/WolfSelect" to="." method="set_wolf_skin"]
 [connection signal="state_changed" from="CanvasLayer/Panel/HumanSelect" to="." method="set_human_skin"]

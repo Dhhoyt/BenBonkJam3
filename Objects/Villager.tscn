@@ -520,7 +520,7 @@ frame = 1
 playing = true
 
 [node name="DeadTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 60.0
 one_shot = true
 
 [node name="RunTimer" type="Timer" parent="."]

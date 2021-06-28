@@ -30,3 +30,8 @@ func set_wolf_skin(state):
 	Globals.wolf_skin = state
 func set_human_skin(state):
 	Globals.human_skin = state
+
+func share():
+	pass # Replace with function body.
+func help():
+	$CanvasLayer/HelpPanel.popup()
