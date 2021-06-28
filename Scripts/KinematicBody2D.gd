@@ -37,6 +37,8 @@ func _process(delta):
 	$HumanRunning.visible = !night
 	$WerewolfRunning.playing = velocity.length_squared() > 1
 	$HumanRunning.playing = velocity.length_squared() > 1
+	var color_percent = ($CooldownTimer.wait_time - $CooldownTimer.time_left)/$CooldownTimer.wait_time
+	$WerewolfRunning.modulate = Color(1, color_percent, color_percent, 1)
 	if velocity.length_squared() > 1:
 		$WerewolfRunning.flip_h = velocity.x > 0 or velocity.y > 0
 		if !$Timer.is_connected("timeout", $Walk, "play"):
