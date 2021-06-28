@@ -229,8 +229,10 @@ func on_villager_death():
 
 func _on_DeathZone_body_entered(body):
 	if body.is_in_group("Night_Player") and mode != 5 and mode != 6:
-		change_mode(6)
-		$Death.play()
+		if !body.on_cooldown:
+			body.kill()
+			change_mode(6)
+			$Death.play()
 	if body.is_in_group("Day_Player") and mode == 4:
 		emit_signal("hit_player")
 		$Hit.play()

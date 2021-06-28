@@ -8,6 +8,7 @@ var velocity = Vector2()
 var inWater = false
 var night = true
 var ignore_water = false
+var on_cooldown = false
 
 onready var tileMap = $"../Village/Navigation2D/TileMap"
 
@@ -58,3 +59,10 @@ func _on_WaterTimer_timeout():
 
 func _on_SpeedTimer_timeout():
 	speed_mult = 1
+
+func kill():
+	on_cooldown = true
+	$CooldownTimer.start()
+
+func _on_CooldownTimer_timeout():
+	on_cooldown = false

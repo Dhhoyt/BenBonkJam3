@@ -515,7 +515,6 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 57 )
 animation = "Purple_Torch"
-frame = 1
 playing = true
 
 [node name="DeadTimer" type="Timer" parent="."]
