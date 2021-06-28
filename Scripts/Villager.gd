@@ -91,7 +91,9 @@ func aggro():
 	
 func torch(distance):
 	var distance_to_next = global_position.distance_to(werewolf.global_position)
-	global_position = global_position.linear_interpolate(werewolf.global_position, distance/distance_to_next) 
+	global_position = global_position.linear_interpolate(werewolf.global_position, distance/distance_to_next)
+	if tilemap.get_cellv(tilemap.world_to_map(position)) == 0 or tilemap.get_cellv(tilemap.world_to_map(position)) == 2:
+		change_mode(0)
 
 func get_new_goal():
 	var new_goal = global_position
@@ -114,11 +116,16 @@ func get_new_goal():
 		new_goal.y = clamp(werewolf.global_position.linear_interpolate(global_position, 3).y, padding, map_size.y - padding)
 	elif mode == 3:
 		var best_distance = 9223372036854775800
+		var found_house = false
 		for i in houses.get_children():
-			if global_position.distance_to(i.global_position) < best_distance:
+			if global_position.distance_to(i.global_position) < best_distance and !i.burning:
 				best_distance = global_position.distance_to(i.global_position)
 				new_goal = i.global_position
-		going_to_house = true
+				found_house = true
+		if found_house:
+			going_to_house = true
+		else:
+			change_mode(2)
 	elif mode == 4:
 		new_goal = werewolf.global_position
 	path = nav_2d.get_simple_path(global_position, new_goal)
@@ -150,6 +157,7 @@ func move_along_path(distance):
 
 func change_mode(new_mode : int):
 	show()
+	$Fire.visible = false
 	if (not new_mode >= 0) or (not new_mode <= 7):
 		return
 	mode = new_mode
@@ -187,7 +195,8 @@ func change_mode(new_mode : int):
 	elif new_mode == 7:
 		moving = false
 		visible = true
-		sprite.animation = color + "_Dead"
+		sprite.animation = color + "_Torch"
+		$Fire.visible = true
 	if not is_day:
 		if new_mode in [1]:
 			emit_signal("scared")
