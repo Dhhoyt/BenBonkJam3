@@ -8,8 +8,8 @@ extents = Vector2( 9, 4 )
 
 [node name="House" type="Sprite"]
 texture = ExtResource( 1 )
-vframes = 8
 hframes = 12
+vframes = 8
 frame = 7
 script = ExtResource( 2 )
 __meta__ = {

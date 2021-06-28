@@ -49,6 +49,8 @@ func _process(delta):
 		aggro()
 	elif mode == 5:
 		hiding(delta)
+	elif mode == 7:
+		torch(delta * speed)
 
 func wander():
 	if global_position.distance_to(werewolf.global_position) < werewolf_range and not is_day:
@@ -78,11 +80,18 @@ func hiding(delta):
 		if i.mode != 4 and i.mode != 6:
 			out += 1
 	if randf() < (pow(0.75, out) * delta):# or out == 1:
+		if !is_day and randf() > 0.9:
+			change_mode(7)
+			return
 		change_mode(0)
 		get_new_goal()
 
 func aggro():
 	pass
+	
+func torch(distance):
+	var distance_to_next = global_position.distance_to(werewolf.global_position)
+	global_position = global_position.linear_interpolate(werewolf.global_position, distance/distance_to_next) 
 
 func get_new_goal():
 	var new_goal = global_position
@@ -141,7 +150,7 @@ func move_along_path(distance):
 
 func change_mode(new_mode : int):
 	show()
-	if (not new_mode >= 0) or (not new_mode <= 6):
+	if (not new_mode >= 0) or (not new_mode <= 7):
 		return
 	mode = new_mode
 	if new_mode == 0:
@@ -175,6 +184,10 @@ func change_mode(new_mode : int):
 		deadtimer.start()
 		emit_signal("death")
 		set_process(false)
+	elif new_mode == 7:
+		moving = false
+		visible = true
+		sprite.animation = color + "_Dead"
 	if not is_day:
 		if new_mode in [1, 2, 3]:
 			emit_signal("scared")
